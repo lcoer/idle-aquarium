@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="day">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" id="theme-meta" content="#0b2932">
+  <meta name="description" content="一缸自在的小鱼。点击投喂，慢慢看它们游过今天。离线可用的电子水族箱。">
+  <title>慢慢水族箱 · 摸一会儿鱼</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%23214f52'/%3E%3Cpath d='M10 20c6-10 15-9 21 0-6 9-15 10-21 0L5 14v12z' fill='%23efb376'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="vendor/glass-react.bundle.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="glass-plus.css?v=natural-20261022">
+  <script src="state.js" defer></script>
+  <script src="fish-manager.js" defer></script>
+  <script src="appearance.js?v=natural-20261022" defer></script>
+  <script src="appearance-ui.js" defer></script>
+  <script src="background.js" defer></script>
+  <script src="background-ui.js" defer></script>
+  <script src="aquarium.js?v=natural-20261022" defer></script>
+  <script src="glass-settings.js?v=natural-20261022" defer></script>
+  <script src="vendor/glass-react.bundle.js?v=natural-20261022" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到水族箱</a>
+  <div class="ambient-light" aria-hidden="true"></div>
+  <svg class="icon-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-fish" viewBox="0 0 24 24"><path d="M5 12c4-7 11-7 16 0-5 7-12 7-16 0L1 8v8z"/><circle cx="16" cy="11" r=".8"/></symbol>
+    <symbol id="i-food" viewBox="0 0 24 24"><path d="m8 3 11 4-3 8-11-4zM8 14l-1 2m6 0-1 2m-8 1-1 2m7-1-1 2"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7z"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14A9 9 0 0 1 10 3a9 9 0 1 0 10 11Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 1v2m0 18v2M1 12h2m18 0h2M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 8M4 4v6h6"/></symbol>
+    <symbol id="i-net" viewBox="0 0 24 24"><ellipse cx="10" cy="9" rx="7" ry="6"/><path d="m15 14 7 8M4 7l10 6M6 4l10 6M3 10l8-7M6 14l10-8"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="9" cy="18" r="2"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2 8c4-5 6 5 10 0s6 5 10 0M2 15c4-5 6 5 10 0s6 5 10 0"/></symbol>
+  </svg>
+  <div class="page">
+    <header class="site-header">
+      <a class="brand" href="./index.html" aria-label="慢慢水族箱首页"><span class="brand-mark liquid-glass"><svg aria-hidden="true"><use href="#i-fish"/></svg></span><span>慢慢<span class="brand-subtitle">水族箱</span></span></a>
+      <nav class="header-nav" aria-label="主导航"><a href="#aquarium" class="current">水下日常</a><button id="manage-button" class="animate-fade-rise-delay-2 nav-manage" type="button" aria-expanded="false" aria-controls="fish-editor">鱼群管理 <svg aria-hidden="true"><use href="#i-sliders"/></svg></button></nav>
+      <span class="header-note"><span class="live-dot"></span> 让时间，慢一点</span>
+    </header>
+    <main id="main">
+      <div class="introduction">
+        <div><h1 class="animate-fade-rise">把片刻，交给水下。</h1><p class="animate-fade-rise-delay">一点水光，几尾小鱼。你可以什么都不做，也可以亲手打理这个小世界。</p></div>
+        <div class="intro-note animate-fade-rise-delay"><svg aria-hidden="true"><use href="#i-wave"/></svg><span>无需照料<br><strong>只管自在</strong></span></div>
+      </div>
+      <section class="aquarium" id="aquarium" aria-label="你的电子水族箱">
+        <div class="tank-wrap" id="tank-wrap">
+          <canvas id="c" tabindex="0" role="img" aria-label="动态鱼缸。点击投喂；启用抄网后点击鱼打捞。按 F 投喂，空格暂停。">浏览器需要支持 Canvas 才能显示水族箱。</canvas>
+          <div class="tank-vignette" aria-hidden="true"></div>
+          <div class="tank-heading"><span class="water-label liquid-glass"><span class="sun-dot" id="water-dot"></span><span id="scene-name">浅海日光</span></span><div class="fish-total liquid-glass"><svg aria-hidden="true"><use href="#i-fish"/></svg><strong id="fish-count">10</strong><span>/ 24 尾</span></div></div>
+          <div class="empty-state" id="empty-state" hidden><h2>留白，也很好看。</h2><p>投放几尾新朋友，让水下重新热闹起来。</p><button type="button" id="empty-stock" class="primary-button">投放小鱼 <svg aria-hidden="true"><use href="#i-plus"/></svg></button></div>
+          <div class="pause-overlay" id="pause-overlay" hidden><span class="pause-badge liquid-glass"><svg aria-hidden="true"><use href="#i-pause"/></svg>时间停在这一刻</span></div>
+          <p class="tank-hint" id="tank-hint">轻点水面，送它们一顿小小的惊喜</p>
+          <div class="tank-controls">
+            <div class="actions liquid-glass" aria-label="鱼缸控制">
+              <button class="animate-fade-rise-delay-2 feed-button" id="feed-button" type="button"><svg aria-hidden="true"><use href="#i-food"/></svg><span>撒点鱼食</span></button><span class="toolbar-divider" aria-hidden="true"></span>
+              <button class="animate-fade-rise-delay-2" id="pause-button" type="button" aria-pressed="false"><svg aria-hidden="true"><use id="pause-icon" href="#i-pause"/></svg><span id="pause-label">暂停</span></button>
+              <button class="animate-fade-rise-delay-2" id="theme-button" type="button" aria-pressed="false"><svg aria-hidden="true"><use id="theme-icon" href="#i-moon"/></svg><span id="theme-label">入夜</span></button>
+              <button class="animate-fade-rise-delay-2" id="net-button" type="button" aria-pressed="false"><svg aria-hidden="true"><use href="#i-net"/></svg><span>抄网</span></button><span class="toolbar-divider" aria-hidden="true"></span>
+              <button id="appearance-button" type="button" aria-controls="appearance-panel" aria-expanded="false"><svg aria-hidden="true"><use href="#i-sun"/></svg><span>背景外观</span></button>
+              <button id="manage-toggle" class="animate-fade-rise-delay-2 manage-toggle" type="button" aria-expanded="false" aria-controls="fish-editor"><svg aria-hidden="true"><use href="#i-sliders"/></svg><span>投放 / 打捞</span></button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="observation-row">
+        <div class="tank-info"><span class="live-dot" id="state-dot"></span><span id="tank-state">自在游动中</span><span class="tiny-divider"></span><span id="growth-note">慢慢长大，不急</span></div>
+        <div class="species-legend" aria-label="三种风格鱼种"><span><i class="amber-dot"></i>琥珀锦鱼</span><span><i class="jade-dot"></i>碧玉灯鱼</span><span><i class="pearl-dot"></i>月白银鱼</span></div>
+      </div>
+      <div class="feedback-line"><p class="interaction-status" id="interaction-status" role="status" aria-live="polite"></p><button id="undo-catch" type="button" hidden>撤销打捞</button></div>
+      <section class="fish-editor" id="fish-editor" aria-labelledby="editor-title" hidden>
+        <div class="editor-heading"><div><span class="section-note">你的水下花园</span><h2 id="editor-title" tabindex="-1">安排一场小小的相遇。</h2><p>投放新朋友，或把小鱼暂时打捞出缸。每一次调整都会自动保存。</p></div><button class="icon-button" id="editor-close" type="button" aria-label="收起鱼群管理"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+        <div class="editor-grid">
+          <form id="stock-form" class="editor-card liquid-glass" aria-labelledby="stock-title">
+            <div class="card-heading"><span class="card-icon"><svg aria-hidden="true"><use href="#i-plus"/></svg></span><div><h3 id="stock-title">投放新朋友</h3><p>选择一尾鱼的模样与节奏。</p></div><span class="capacity" id="capacity-left">余量 14 尾</span></div>
+            <div class="stock-specimen" id="stock-specimen" data-kind="amber"><svg viewBox="0 0 150 65" aria-hidden="true"><path class="specimen-tail" d="M42 33 13 11l9 23-9 22z"/><ellipse class="specimen-body" cx="78" cy="33" rx="42" ry="22"/><path class="specimen-fin" d="m62 16 19-13 16 15M60 44l11 15 16-13"/><path class="specimen-stripe" d="M63 14q-8 18 0 37m16-40q-8 22 0 44m16-41q-6 18 0 36"/><circle cx="104" cy="29" r="4" fill="#f2f5ea"/><circle cx="105" cy="29" r="2" fill="#173b42"/></svg><div><strong id="specimen-name">琥珀锦鱼</strong><span id="specimen-note">暖金纹理，悠然巡游</span></div><span class="specimen-caption">风格鱼种预设</span></div>
+            <div class="form-row"><label for="stock-kind">鱼种<select id="stock-kind" name="kind"><option value="amber">琥珀锦鱼</option><option value="jade">碧玉灯鱼</option><option value="pearl">月白银鱼</option></select></label><label for="stock-count">投放数量<input id="stock-count" name="count" type="number" min="1" max="8" step="1" value="3" inputmode="numeric" autocomplete="off"><span class="field-help">每次 1–8 尾</span></label></div>
+            <div class="range-field"><label for="stock-size">成年体型 <output id="size-value" for="stock-size">30</output></label><input id="stock-size" name="size" type="range" min="14" max="32" value="30"><div class="range-labels"><span>小巧</span><span>饱满</span></div></div>
+            <div class="range-field"><label for="stock-speed">游动速度 <output id="speed-value" for="stock-speed">20</output></label><input id="stock-speed" name="speed" type="range" min="12" max="40" value="20"><div class="range-labels"><span>慢慢游</span><span>轻快些</span></div></div>
+            <label for="stock-stage" class="stage-label">成长阶段<select id="stock-stage" name="stage"><option value="adult">成鱼 · 即刻悠游</option><option value="juvenile">幼鱼 · 陪它慢慢长大</option></select></label>
+            <p class="form-message" id="stock-message" role="status" aria-live="polite">鱼缸最多容纳 24 尾小鱼。</p><button class="animate-fade-rise-delay-2 primary-button" type="submit" id="stock-submit">投放到鱼缸 <svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          </form>
+          <form id="catch-form" class="editor-card liquid-glass" aria-labelledby="catch-title">
+            <div class="card-heading"><span class="card-icon"><svg aria-hidden="true"><use href="#i-net"/></svg></span><div><h3 id="catch-title">温柔地打捞</h3><p>按条件筛选，也可以亲手选择。</p></div></div>
+            <button class="manual-net" id="manual-net" type="button" aria-pressed="false"><svg aria-hidden="true"><use href="#i-net"/></svg><span><strong>使用手动抄网</strong><small>开启后，点击鱼缸里的小鱼</small></span><span class="switch-track" aria-hidden="true"></span></button>
+            <div class="form-row"><label for="catch-kind">鱼种筛选<select id="catch-kind" name="kind"><option value="all">所有鱼种</option><option value="amber">琥珀锦鱼</option><option value="jade">碧玉灯鱼</option><option value="pearl">月白银鱼</option></select></label><label for="catch-stage">成长阶段<select id="catch-stage" name="stage"><option value="all">所有阶段</option><option value="adult">仅成鱼</option><option value="juvenile">仅幼鱼</option></select></label></div>
+            <div class="form-row"><label for="catch-count">打捞数量<input id="catch-count" name="count" type="number" min="1" max="24" step="1" value="1" inputmode="numeric" autocomplete="off"></label><label for="catch-order">打捞优先规则<select id="catch-order" name="order"><option value="oldest">优先最年长</option><option value="youngest">优先最年幼</option></select></label></div>
+            <div class="catch-preview"><span>本次规则预览</span><p><strong id="catch-matches">10</strong> 尾符合条件<span>，预计打捞 <b id="catch-estimate">1</b> 尾</span></p><small>15 秒内可撤销。刷新或再次打捞会结束上次撤销；空缸不会自动补鱼。</small></div>
+            <p class="form-message" id="catch-message" role="status" aria-live="polite">按下按钮后执行当前规则。</p><button class="animate-fade-rise-delay-2 secondary-button" type="submit" id="catch-submit">按规则打捞 <svg aria-hidden="true"><use href="#i-net"/></svg></button>
+          </form>
+        </div>
+      </section>
+      <div class="bottom-settings"><p><span class="keycap">空格</span> 暂停 <span class="keycap">F</span> 投喂 <span class="keycap">Esc</span> 收起 / 退出抄网</p><div><span id="save-status" role="status" aria-live="polite">鱼缸会自动保存</span><button id="reset-button" type="button"><svg aria-hidden="true"><use href="#i-reset"/></svg>重置鱼缸</button></div></div>
+      <div class="reset-confirmation liquid-glass" id="reset-confirmation" role="group" aria-label="确认重置鱼缸" hidden><span>重新养一缸小鱼？当前鱼缸会被替换。</span><div><button id="reset-cancel" type="button">保留现在</button><button id="reset-confirm" type="button">重新开始</button></div></div>
+    </main>
+    <footer><span>不用赶路，也是一种日常。</span><span>保存在你的浏览器里，自在留在水下。</span><a href="https://github.com/wenonly/desktop-aquarium" target="_blank" rel="noopener noreferrer">源自 desktop-aquarium · MIT</a></footer>
+  </div>
+  <aside id="appearance-panel" class="appearance-panel liquid-glass" popover="auto" aria-labelledby="appearance-title">
+    <div class="appearance-scroll">
+    <div class="appearance-heading"><div><span class="appearance-eyebrow">MAKE IT YOURS</span><h2 id="appearance-title">水光，由你。</h2></div><button id="appearance-close" autofocus class="icon-button" type="button" aria-label="关闭背景外观"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+    <p class="appearance-intro">草木随水流轻摆，光落在砂石间。挑一种适合你的水下氛围。</p>
+    <fieldset class="background-image-settings"><legend>背景与光学对照</legend>
+      <label class="optical-pattern-label"><input id="optical-pattern" type="checkbox"><span>参考条纹<small>玻璃效果对照用；关闭后回到自然水景</small></span></label>
+      <label class="background-upload" for="background-file"><svg aria-hidden="true"><use href="#i-plus"/></svg><span>选择背景图片<small>JPG / PNG / WebP 等 · 最大 20 MB</small></span></label>
+      <input class="background-file" id="background-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif,image/gif">
+      <div class="background-thumbnail"><img id="background-preview" alt="当前背景缩略图" hidden><span id="background-name">还没有背景图片</span><button id="background-remove" type="button" disabled>移除</button></div>
+      <label for="background-position">图片位置<select id="background-position" disabled><option value="center">居中铺满</option><option value="top">顶部优先</option><option value="bottom">底部优先</option></select></label>
+      <label class="background-shade-label" for="background-shade">暗色遮罩 <output id="background-shade-value" for="background-shade">35%</output></label><input id="background-shade" type="range" min="0" max="80" value="35" disabled>
+      <label class="background-water-label"><input id="background-water" type="checkbox" checked disabled>同时应用到水下背景</label>
+      <p id="background-status" role="status" aria-live="polite">图片只保存在此浏览器，不会上传。</p>
+    </fieldset>
+    <fieldset class="appearance-presets"><legend>氛围配色</legend><div class="preset-grid">
+      <button class="nature-preset" type="button" data-preset="forest" aria-pressed="false"><i style="--swatch:linear-gradient(135deg,#8ca870,#183c30)"></i><span>自然草缸</span></button>
+      <button type="button" data-preset="lagoon" aria-pressed="true"><i style="--swatch:linear-gradient(135deg,#93cfc7,#234650)"></i><span>薄荷浅湾</span></button>
+      <button type="button" data-preset="ocean" aria-pressed="false"><i style="--swatch:linear-gradient(135deg,#86b9ed,#263c73)"></i><span>晴空深海</span></button>
+      <button type="button" data-preset="dusk" aria-pressed="false"><i style="--swatch:linear-gradient(135deg,#d4b3d9,#595078)"></i><span>落日紫雾</span></button>
+      <button type="button" data-preset="sand" aria-pressed="false"><i style="--swatch:linear-gradient(135deg,#edd1a2,#6b6552)"></i><span>暖沙微光</span></button>
+    </div></fieldset>
+    <fieldset class="appearance-colors"><legend>细调色彩</legend>
+      <label class="color-row" for="color-page"><span>环境底色<small>水族箱之外的氛围</small></span><span class="color-value" id="value-page"></span><input id="color-page" type="color" value="#173b43"></label>
+      <label class="color-row" for="color-top"><span>浅水色<small>光线落下的地方</small></span><span class="color-value" id="value-top"></span><input id="color-top" type="color" value="#4c858a"></label>
+      <label class="color-row" for="color-bottom"><span>深水色<small>水下的安静与纵深</small></span><span class="color-value" id="value-bottom"></span><input id="color-bottom" type="color" value="#193f4c"></label>
+    </fieldset>
+    <div class="appearance-light"><label for="water-light">水色明度 <output id="light-value" for="water-light">100%</output></label><input type="range" id="water-light" min="60" max="130" step="1" value="100"><div><span>幽深</span><span>通透</span></div></div>
+    <fieldset class="glass-material"><legend>玻璃质感</legend><div class="glass-mode-picker" aria-label="玻璃渲染模式">
+      <button type="button" data-glass-mode="auto" aria-pressed="true">自动</button><button type="button" data-glass-mode="plus" aria-pressed="false">液态 Plus</button><button type="button" data-glass-mode="lite" aria-pressed="false">轻量磨砂</button>
+    </div><p id="glass-render-status" role="status">正在准备玻璃材质</p>
+    <label class="glass-strength-label" for="glass-strength">折射强度 <output id="glass-strength-value" for="glass-strength">65%</output></label><input id="glass-strength" type="range" min="0" max="100" value="65"><p class="glass-save-status" id="glass-save-status" role="status">仅影响玻璃边缘，不改变水色。</p></fieldset>
+    <div class="appearance-footer"><p id="appearance-status" role="status" aria-live="polite">实时预览 · 自动保存</p><button id="appearance-reset" type="button"><svg aria-hidden="true"><use href="#i-reset"/></svg>恢复默认配色</button><small>只调整外观，小鱼会继续自在游动。</small></div>
+    </div>
+  </aside>
+  <noscript><p class="noscript">请启用 JavaScript，让小鱼游起来。</p></noscript>
+</body>
+</html>

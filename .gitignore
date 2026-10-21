@@ -1,0 +1,17 @@
+node_modules/
+.agents/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
+screenshots/*
+!screenshots/natural-aquascape.jpg
+apple-glass-sidebar.jpg
+design.md
+plan.md
+review.md
+final_report.md
+RESEARCH.md
+REDESIGN.md
