@@ -1,5 +1,7 @@
 # 慢慢水族箱
 
+**在线体验：[打开慢慢水族箱](https://lcoer.github.io/idle-aquarium/)**
+
 一个可以投喂、养鱼和打理的浏览器水族箱。鱼与水草采用自然彩色外观，搭配砂石、沉木、水流摆动和水下光影；工具栏与外观面板保留液态玻璃效果。
 
 ![自然草缸预览](screenshots/natural-aquascape.jpg)
@@ -44,7 +46,7 @@ npm test
 - React 19 与 Three.js 0.186.1 负责局部玻璃光学层。
 - esbuild 将 `glass-react.jsx` 打包到 `vendor/glass-react.bundle.js`，修改相关源码后需重新构建。
 - 测试覆盖存档、投喂、成长、投放打捞、外观、背景与兼容模式；当前 40 项通过。
-- 上传到任意静态托管平台即可运行；GitHub Pages 需要另外在仓库设置中启用。
+- 上传到任意静态托管平台即可运行；本仓库通过 GitHub Pages 发布 `main` 分支根目录，后续推送后会自动更新网站。
 
 开发技能属于本地工具，未随运行项目上传。自然材质与动画改造说明见 [NATURALISM.md](NATURALISM.md)，玻璃层说明见 [OPTICS.md](OPTICS.md)。
 
